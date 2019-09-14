@@ -1,6 +1,6 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import { getMovieById } from '../../api/imdb';
-import MaterialTable, { Action } from 'material-table';
+import MaterialTable, { Action, Column } from 'material-table';
 import moment from 'moment';
 import { calculateAvailability } from '../../utils';
 import { MovieDetail } from '../../components/MovieDetail';
@@ -65,7 +65,7 @@ export const App: React.FC = () => {
     return <MovieDetail movie={rowData} />
   }
 
-  const tableActions: (Action<RowData> | ((rowData: RowData) => Action<RowData>))[] = [
+  const tableActions: (Action<IDetailedMovie> | ((rowData: IDetailedMovie) => Action<IDetailedMovie>))[] = [
     {
       icon: 'delete',
       iconProps: { color: 'error' },
@@ -74,15 +74,17 @@ export const App: React.FC = () => {
     }
   ]
 
+  const tableColumns: Column<IDetailedMovie>[] = [
+    { title: 'Title', field: 'title' },
+    { title: 'Release  Date', field: 'releasedFmt', customSort: (a, b) => a.released.getTime() - b.released.getTime() },
+    { title: 'Rating', field: 'rating', type: 'numeric' },
+    { title: 'FL Ready', field: 'ready', lookup: { true: 'Yes', false: 'No' } }
+  ]
+
   return (
     <Container maxWidth={width > 1000 ? 'xl' : 'xs'}>
       <MaterialTable
-        columns={[
-          { title: 'Title', field: 'title' },
-          { title: 'Release  Date', field: 'releasedFmt', customSort: (a, b) => a.released.getTime() - b.released.getTime() },
-          { title: 'Rating', field: 'rating', type: 'numeric' },
-          { title: 'FL Ready', field: 'ready', lookup: { true: 'Yes', false: 'No' } }
-        ]}
+        columns={tableColumns}
         data={movies}
         options={{ paging: false, detailPanelType: 'single' }}
         isLoading={!pageReady}
