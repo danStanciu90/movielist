@@ -1,5 +1,5 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
-import { getMovieById } from '../../api/imdb';
+import { getMovieById } from '../../api';
 import MaterialTable, { Action, Column } from 'material-table';
 import moment from 'moment';
 import { calculateAvailability } from '../../utils';
