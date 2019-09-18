@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "4.4.2",
+    "firebase": "6.6.1",
     "imdb-api": "4.0.3",
     "material-table": "1.50.0",
     "moment": "2.24.0",

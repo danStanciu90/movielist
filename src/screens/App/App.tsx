@@ -1,5 +1,5 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
-import { getMovieById } from '../../api';
+import { getMovieById, getAllMovies } from '../../api';
 import MaterialTable, { Action, Column } from 'material-table';
 import moment from 'moment';
 import { calculateAvailability } from '../../utils';
@@ -9,7 +9,6 @@ import { Container } from '@material-ui/core';
 const jsonMovies = require('../../movies.json');
 
 export interface IDBMovie {
-  _id: string;
   imdbid: string;
   excitement?: number;
 }
@@ -34,17 +33,28 @@ const width = window.innerWidth;
 export const App: React.FC = () => {
   const [movies, setMovies] = useState<IDetailedMovie[]>([]);
   const [pageReady, setPageReady] = useState(false);
+
   useEffect(() => {
-    jsonMovies.forEach(async (movie: IDBMovie, index: number) => {
-      const detailedMovie: IDetailedMovie = await getMovieById(movie.imdbid);
-      detailedMovie.releasedFmt = moment(detailedMovie.released).format('DD/MM/YYYY')
-      detailedMovie.ready = calculateAvailability(detailedMovie)
-      setMovies(prev => [...prev, detailedMovie])
-      if (index === jsonMovies.length - 1) {
-        setPageReady(true)
-      }
-    });
+    getAllMovies().then((res: IDBMovie[]) => {
+      res.forEach(async (movie: IDBMovie, index: number) => {
+        try {
+          const detailedMovie: IDetailedMovie = await getMovieById(movie.imdbid);
+          detailedMovie.releasedFmt = moment(detailedMovie.released).format('DD/MM/YYYY')
+          detailedMovie.ready = calculateAvailability(detailedMovie)
+          setMovies(prev => [...prev, detailedMovie])
+          if (index === jsonMovies.length - 1) {
+            setPageReady(true)
+          }
+        }
+        catch (err) {
+          console.log(`error getting the details for the movie id ${movie.imdbid}`)
+        }
+      });
+    })
   }, [])
+
+
+
 
   const deleteMovie = (movie: IDetailedMovie | IDetailedMovie[]) => {
     if (movie instanceof Array) {

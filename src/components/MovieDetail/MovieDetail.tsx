@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from 'react';
+import React, { FunctionComponent } from 'react';
 import { IDetailedMovie } from '../../screens/App';
 
 interface IMovieDetailProps {
