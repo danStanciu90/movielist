@@ -1,12 +1,10 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
-import { getMovieById, getAllMovies } from '../../api';
+import { getAllMovies, deleteMovie } from '../../api';
 import MaterialTable, { Action, Column } from 'material-table';
-import moment from 'moment';
-import { calculateAvailability } from '../../utils';
+import { parseMovies } from '../../utils';
 import { MovieDetail } from '../../components/MovieDetail';
 import { Container } from '@material-ui/core';
-
-const jsonMovies = require('../../movies.json');
+import { Alert } from '../../components/Alert/Alert';
 
 export interface IDBMovie {
   imdbid: string;
@@ -33,35 +31,38 @@ const width = window.innerWidth;
 export const App: React.FC = () => {
   const [movies, setMovies] = useState<IDetailedMovie[]>([]);
   const [pageReady, setPageReady] = useState(false);
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
+  const [movieToDelete, setMovieToDelete] = useState<IDetailedMovie>()
 
   useEffect(() => {
-    getAllMovies().then((res: IDBMovie[]) => {
-      res.forEach(async (movie: IDBMovie, index: number) => {
-        try {
-          const detailedMovie: IDetailedMovie = await getMovieById(movie.imdbid);
-          detailedMovie.releasedFmt = moment(detailedMovie.released).format('DD/MM/YYYY')
-          detailedMovie.ready = calculateAvailability(detailedMovie)
-          setMovies(prev => [...prev, detailedMovie])
-          if (index === jsonMovies.length - 1) {
-            setPageReady(true)
-          }
-        }
-        catch (err) {
-          console.log(`error getting the details for the movie id ${movie.imdbid}`)
-        }
-      });
+    getAllMovies().then(async (dbMovies: IDBMovie[]) => {
+      try {
+        const parsedMovies = await parseMovies(dbMovies);
+        setMovies(parsedMovies)
+        setPageReady(true)
+      } catch (error) {
+        console.log('error parsing the movies: ', error);
+      }
+
     })
   }, [])
 
 
 
 
-  const deleteMovie = (movie: IDetailedMovie | IDetailedMovie[]) => {
-    if (movie instanceof Array) {
+  const handleDeleteMovie = async () => {
+    if (!movieToDelete) {
       return;
     }
-    const remaining: IDetailedMovie[] = movies.filter(m => m.imdbid !== movie.imdbid)
-    setMovies(remaining)
+    try {
+      await deleteMovie(movieToDelete.imdbid)
+      const remaining: IDetailedMovie[] = movies.filter(m => m.imdbid !== movieToDelete.imdbid)
+      setMovies(remaining)
+      setDeleteAlertOpen(false)
+    } catch (error) {
+      console.log('error deleting the movie', error);
+
+    }
   }
 
   const handleRowClick = (_event: MouseEvent | undefined, _rowData: IDetailedMovie | undefined, togglePanel: ((panelIndex?: number) => void) | undefined) => {
@@ -80,19 +81,32 @@ export const App: React.FC = () => {
       icon: 'delete',
       iconProps: { color: 'error' },
       tooltip: 'Delete',
-      onClick: (_event, rowData) => deleteMovie(rowData)
+      onClick: (_event, rowData) => {
+        setDeleteAlertOpen(true);
+        if (rowData instanceof Array) {
+          return;
+        }
+        setMovieToDelete(rowData)
+      }
     }
   ]
 
-  const tableColumns: Column<IDetailedMovie>[] = [
+  let tableColumns: Column<IDetailedMovie>[] = [
     { title: 'Title', field: 'title' },
     { title: 'Release  Date', field: 'releasedFmt', customSort: (a, b) => a.released.getTime() - b.released.getTime() },
     { title: 'Rating', field: 'rating', type: 'numeric' },
     { title: 'FL Ready', field: 'ready', lookup: { true: 'Yes', false: 'No' } }
   ]
 
+  if (width < 1000) {
+    tableColumns = [
+      { title: 'Title', field: 'title' },
+      { title: 'FL Ready', field: 'ready', lookup: { true: 'Yes', false: 'No' } }
+    ]
+  }
+
   return (
-    <Container maxWidth={width > 1000 ? 'xl' : 'xs'}>
+    <Container>
       <MaterialTable
         columns={tableColumns}
         data={movies}
@@ -102,6 +116,16 @@ export const App: React.FC = () => {
         actions={tableActions}
         detailPanel={renderDetailPanel}
         onRowClick={handleRowClick}
+      />
+      <Alert
+        open={deleteAlertOpen}
+        title={`Delete "${movieToDelete ? movieToDelete.title : 'movie'}"`}
+        message="Are you sure you want to delete this movie?"
+        onCancel={() => {
+          setDeleteAlertOpen(false);
+          setMovieToDelete(undefined)
+        }}
+        onSuccess={handleDeleteMovie}
       />
     </Container>
   );
