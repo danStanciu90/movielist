@@ -1,5 +1,5 @@
 import { firebase } from '../utils/firebase';
-import { IDBMovie } from '../screens/App';
+import { IDBMovie } from '../screens/MovieList';
 
 const imdb = require('imdb-api')
 const imdbClient = new imdb.Client({ apiKey: '50ca2246' });
@@ -16,7 +16,17 @@ export const getAllMovies = async () => {
 
     return movies as IDBMovie[];
   } catch (error) {
-    return error
+    throw error;
+  }
+}
+
+export const addMovie = async (imdbid: string) => {
+  try {
+    await moviesdb.add({
+      imdbid
+    })
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -29,6 +39,15 @@ export const deleteMovie = async (imdbid: string) => {
     })
     return 'ok'
   } catch (error) {
-    return error
+    throw error;
+  }
+}
+
+export const searchMovie = async (title: string) => {
+  try {
+    const response = await imdbClient.search({ 'name': title });
+    return response.results
+  } catch (error) {
+    throw error;
   }
 }

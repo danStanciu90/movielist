@@ -1,4 +1,4 @@
-import { IDetailedMovie, IDBMovie } from "../screens/App/App"
+import { IDetailedMovie, IDBMovie } from "../screens/MovieList"
 import { getMovieById } from "../api"
 import moment from "moment"
 

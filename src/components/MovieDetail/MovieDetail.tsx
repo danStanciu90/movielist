@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { IDetailedMovie } from '../../screens/App';
+import { IDetailedMovie } from '../../screens/MovieList';
 
 interface IMovieDetailProps {
     movie: IDetailedMovie;
