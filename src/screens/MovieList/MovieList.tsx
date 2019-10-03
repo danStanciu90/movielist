@@ -30,6 +30,7 @@ export interface IDetailedMovie {
   plot: string;
   ready: boolean;
   imdbid: string;
+  excitement: number;
 }
 
 export const MovieList: FunctionComponent = () => {
@@ -44,6 +45,8 @@ export const MovieList: FunctionComponent = () => {
       try {
         const parsedMovies = await parseMovies(dbMovies);
         setMovies(parsedMovies);
+        const x = parsedMovies.find(movie => movie.imdbid === "tt6866224");
+        console.log("x: ", x);
         setPageReady(true);
       } catch (error) {
         console.log("error parsing the movies: ", error);

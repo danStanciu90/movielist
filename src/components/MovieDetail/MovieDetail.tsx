@@ -1,4 +1,6 @@
-import { Typography } from "@material-ui/core";
+import { Typography, withStyles } from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import { Rating } from "@material-ui/lab";
 import React, { FunctionComponent } from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { IDetailedMovie } from "../../screens/MovieList";
@@ -7,6 +9,15 @@ import { MovieDetailListItem } from "./MovieDetailListItem/MovieDetailListItem";
 interface IMovieDetailProps {
   movie: IDetailedMovie;
 }
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#ff6d75"
+  },
+  iconHover: {
+    color: "#ff3d47"
+  }
+})(Rating);
 
 export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
   movie
@@ -40,6 +51,16 @@ export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
           {movie.title} ({movie.year})
         </Typography>
         <MovieDetailListItem name="Rating: " value={`${movie.rating}`} />
+        <MovieDetailListItem
+          name="Excitement: "
+          component={
+            <StyledRating
+              readOnly
+              value={movie.excitement}
+              icon={<FavoriteIcon fontSize="inherit" />}
+            />
+          }
+        />
         <MovieDetailListItem
           name="Release Date: "
           value={`${movie.releasedFmt}`}
