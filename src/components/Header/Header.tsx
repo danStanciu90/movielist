@@ -1,22 +1,29 @@
-import React, { FunctionComponent } from 'react';
-import { AppBar, Toolbar, Typography, Button, Icon } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar } from "@material-ui/core";
+import React, { FunctionComponent } from "react";
+import { StaticContext } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { AddMovieHeader } from "../AddMovieHeader/AddMovieHeader";
+import { HeaderTitle } from "../HeaderTitle";
 
-export const Header: FunctionComponent = () => {
-
+const Header: FunctionComponent<
+  React.PropsWithChildren<RouteComponentProps<any, StaticContext, any>>
+> = ({ location }) => {
+  const { pathname } = location;
   return (
     <AppBar position="static">
-      <Toolbar variant="dense" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Typography variant="h6" color="inherit">
-          Movies to watch
-        </Typography>
-        <Link to="/add" style={{ textDecoration: 'none' }}>
-          <Button color="primary" style={{ color: '#FFFFFF' }}>
-            <Icon style={{ marginRight: 5 }}>add</Icon>
-            Add Movie
-          </Button>
-        </Link>
+      <Toolbar
+        variant="dense"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}
+      >
+        <HeaderTitle isLink={pathname !== "/"} />
+        <AddMovieHeader show={pathname !== "/add"} />
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
+
+export const HeaderWithRouter = withRouter(props => <Header {...props} />);

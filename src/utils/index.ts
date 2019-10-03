@@ -4,13 +4,11 @@ import moment from "moment"
 
 export const calculateAvailability = (movie: IDetailedMovie) => {
   if (movie.dvd && movie.dvd !== 'N/A') {
-    console.log('movie dvd: ', movie.dvd, movie.title)
     let dvdDate = Date.parse(movie.dvd)
     if (Date.now() > dvdDate) return true
     else return false
   }
   else if (movie.released) {
-    console.log('movie released: ', movie.released, movie.title)
     let releaseDate = Date.parse(movie.released.toString())
     let newDate = new Date()
     newDate.setMonth(newDate.getMonth() - 3)
@@ -18,7 +16,6 @@ export const calculateAvailability = (movie: IDetailedMovie) => {
     if (dateToCalculate > releaseDate) return true
   }
 
-  console.log('returning false: ', movie)
   return false
 }
 
