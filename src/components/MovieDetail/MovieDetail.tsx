@@ -12,10 +12,10 @@ interface IMovieDetailProps {
 
 const StyledRating = withStyles({
   iconFilled: {
-    color: "#ff6d75"
+    color: "#f50057"
   },
   iconHover: {
-    color: "#ff3d47"
+    color: "#c51162"
   }
 })(Rating);
 

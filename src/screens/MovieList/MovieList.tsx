@@ -1,11 +1,8 @@
+import { DeleteForever, Favorite } from "@material-ui/icons";
+import { Rating } from "@material-ui/lab";
+import { withStyles } from "@material-ui/styles";
 import MaterialTable, { Action, Column } from "material-table";
-import React, {
-  Fragment,
-  FunctionComponent,
-  MouseEvent,
-  useEffect,
-  useState
-} from "react";
+import React, { Fragment, FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { deleteMovie, getAllMovies } from "../../api";
 import { Alert } from "../../components/Alert";
 import { MovieDetail } from "../../components/MovieDetail";
@@ -16,6 +13,15 @@ export interface IDBMovie {
   imdbid: string;
   excitement?: number;
 }
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#f50057"
+  },
+  iconHover: {
+    color: "#c51162"
+  }
+})(Rating);
 
 export interface IDetailedMovie {
   title: string;
@@ -89,8 +95,7 @@ export const MovieList: FunctionComponent = () => {
     | Action<IDetailedMovie>
     | ((rowData: IDetailedMovie) => Action<IDetailedMovie>))[] = [
     {
-      icon: "delete",
-      iconProps: { color: "error" },
+      icon: () => <DeleteForever color="secondary" />,
       tooltip: "Delete",
       onClick: (_event, rowData) => {
         setDeleteAlertOpen(true);
@@ -109,8 +114,20 @@ export const MovieList: FunctionComponent = () => {
       field: "releasedFmt",
       customSort: (a, b) => a.released.getTime() - b.released.getTime()
     },
+    {
+      title: "Excitement",
+      field: "excitement",
+      render: data => (
+        <StyledRating
+          value={data.excitement}
+          icon={<Favorite fontSize="inherit" />}
+        />
+      )
+    },
     { title: "Rating", field: "rating", type: "numeric" },
-    { title: "FL Ready", field: "ready", lookup: { true: "Yes", false: "No" } }
+    { title: "FL Ready", field: "ready", lookup: { true: "Yes", false: "No" } },
+    { title: "Actors", field: "actors", hidden: true, searchable: true },
+    { title: "Genre", field: "genres", hidden: true, searchable: true }
   ];
 
   if (width < 700) {
@@ -120,7 +137,9 @@ export const MovieList: FunctionComponent = () => {
         title: "FL Ready",
         field: "ready",
         lookup: { true: "Yes", false: "No" }
-      }
+      },
+      { title: "Actors", field: "actors", hidden: true, searchable: true },
+      { title: "Genre", field: "genres", hidden: true, searchable: true }
     ];
   }
 
