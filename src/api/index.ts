@@ -8,7 +8,7 @@ const imdbClient = new imdb.Client({
 const moviesdb = firebase.firestore().collection("movies");
 
 export const getMovieById = async (movieId: string) => {
-  return await imdbClient.get({ id: movieId });
+  return imdbClient.get({ id: movieId });
 };
 
 export const getAllMovies = async () => {
@@ -50,6 +50,23 @@ export const searchMovie = async (title: string) => {
   try {
     const response = await imdbClient.search({ name: title });
     return response.results;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateMovie = async (
+  imdbid: string,
+  fieldToUpdate: keyof IDBMovie,
+  value: string | number
+) => {
+  try {
+    const moviesQuery = moviesdb.where("imdbid", "==", imdbid);
+    const snapshot = await moviesQuery.get();
+    snapshot.forEach(doc => {
+      const docData = doc.data();
+      doc.ref.set({ ...docData, [fieldToUpdate]: value });
+    });
   } catch (error) {
     throw error;
   }

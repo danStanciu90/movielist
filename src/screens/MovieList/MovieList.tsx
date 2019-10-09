@@ -2,8 +2,14 @@ import { DeleteForever, Favorite } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
 import { withStyles } from "@material-ui/styles";
 import MaterialTable, { Action, Column } from "material-table";
-import React, { Fragment, FunctionComponent, MouseEvent, useEffect, useState } from "react";
-import { deleteMovie, getAllMovies } from "../../api";
+import React, {
+  Fragment,
+  FunctionComponent,
+  MouseEvent,
+  useEffect,
+  useState
+} from "react";
+import { deleteMovie, getAllMovies, updateMovie } from "../../api";
 import { Alert } from "../../components/Alert";
 import { MovieDetail } from "../../components/MovieDetail";
 import { useWindowSize } from "../../hooks/useWindowSize";
@@ -41,24 +47,26 @@ export interface IDetailedMovie {
 
 export const MovieList: FunctionComponent = () => {
   const [movies, setMovies] = useState<IDetailedMovie[]>([]);
-  const [pageReady, setPageReady] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
   const [movieToDelete, setMovieToDelete] = useState<IDetailedMovie>();
   const { width } = useWindowSize();
 
   useEffect(() => {
+    getTableData();
+  }, []);
+
+  const getTableData = async () => {
     getAllMovies().then(async (dbMovies: IDBMovie[]) => {
       try {
         const parsedMovies = await parseMovies(dbMovies);
         setMovies(parsedMovies);
-        const x = parsedMovies.find(movie => movie.imdbid === "tt6866224");
-        console.log("x: ", x);
-        setPageReady(true);
+        setLoading(false);
       } catch (error) {
         console.log("error parsing the movies: ", error);
       }
     });
-  }, []);
+  };
 
   const handleDeleteMovie = async () => {
     if (!movieToDelete) {
@@ -87,8 +95,27 @@ export const MovieList: FunctionComponent = () => {
     togglePanel();
   };
 
+  const handleExcitementChange = async (imdbid: string, value: number) => {
+    try {
+      await updateMovie(imdbid, "excitement", value);
+      const movieArray = [...movies];
+      const movieToChange = movieArray.find(movie => movie.imdbid === imdbid);
+      if (movieToChange) {
+        movieToChange.excitement = value;
+      }
+      setMovies(movieArray);
+    } catch (error) {
+      console.log("error updating the movie", error);
+    }
+  };
+
   const renderDetailPanel = (rowData: IDetailedMovie) => {
-    return <MovieDetail movie={rowData} />;
+    return (
+      <MovieDetail
+        movie={rowData}
+        onExcitementChange={handleExcitementChange}
+      />
+    );
   };
 
   const tableActions: (
@@ -119,8 +146,10 @@ export const MovieList: FunctionComponent = () => {
       field: "excitement",
       render: data => (
         <StyledRating
+          name="Excitement Level"
           value={data.excitement}
           icon={<Favorite fontSize="inherit" />}
+          readOnly
         />
       )
     },
@@ -149,7 +178,7 @@ export const MovieList: FunctionComponent = () => {
         columns={tableColumns}
         data={movies}
         options={{ paging: false, detailPanelType: "single" }}
-        isLoading={!pageReady}
+        isLoading={loading}
         title=""
         actions={tableActions}
         detailPanel={renderDetailPanel}

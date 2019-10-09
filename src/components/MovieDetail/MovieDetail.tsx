@@ -1,13 +1,14 @@
 import { Typography, withStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { Rating } from "@material-ui/lab";
-import React, { FunctionComponent } from "react";
+import React, { ChangeEvent, FunctionComponent } from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { IDetailedMovie } from "../../screens/MovieList";
 import { MovieDetailListItem } from "./MovieDetailListItem/MovieDetailListItem";
 
 interface IMovieDetailProps {
   movie: IDetailedMovie;
+  onExcitementChange(imdbid: string, value: number): void;
 }
 
 const StyledRating = withStyles({
@@ -20,9 +21,11 @@ const StyledRating = withStyles({
 })(Rating);
 
 export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
-  movie
+  movie,
+  onExcitementChange
 }) => {
   const { width } = useWindowSize();
+
   return (
     <div
       style={{
@@ -55,9 +58,11 @@ export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
           name="Excitement: "
           component={
             <StyledRating
-              readOnly
               value={movie.excitement}
               icon={<FavoriteIcon fontSize="inherit" />}
+              onChange={(_event: ChangeEvent<{}>, value: number) =>
+                onExcitementChange(movie.imdbid, value)
+              }
             />
           }
         />
