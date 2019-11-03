@@ -1,9 +1,9 @@
 name: Update DB
 
-on:
-  schedule:
-    # - cron: '* 23 * * *'
-    - cron: '0 0 * * *'
+on: push
+  # schedule:
+  #   # - cron: '* 23 * * *'
+  #   - cron: '0 0 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,3 +17,5 @@ jobs:
         run: >
           npm install -g yarn
           && yarn install
+      - name: Update DB
+        run: yarn update-movies
