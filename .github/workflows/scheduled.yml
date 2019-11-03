@@ -19,3 +19,12 @@ jobs:
           && yarn install
       - name: Update DB
         run: yarn update-movies
+        env:
+          REACT_APP_API_KEY: ${{seecrets.REACT_APP_API_KEY}}
+          REACT_APP_APP_ID: ${{seecrets.REACT_APP_APP_ID}}
+          REACT_APP_AUTH_DOMAIN: ${{seecrets.REACT_APP_AUTH_DOMAIN}}
+          REACT_APP_DB_URL: ${{seecrets.REACT_APP_DB_URL}}
+          REACT_APP_IMDB_API_KEY: ${{seecrets.REACT_APP_IMDB_API_KEY}}
+          REACT_APP_MSG_SENDER_ID: ${{seecrets.REACT_APP_MSG_SENDER_ID}}
+          REACT_APP_PROJECT_ID: ${{seecrets.REACT_APP_PROJECT_ID}}
+          REACT_APP_STORAGE_BUCKET: ${{seecrets.REACT_APP_STORAGE_BUCKET}}
