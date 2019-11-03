@@ -1,10 +1,9 @@
 name: Update DB
 
 on:
-  push
-  # schedule:
-  #   # - cron: '* 23 * * *'
-  #   - cron: '* * * * *'
+  schedule:
+    # - cron: '* 23 * * *'
+    - cron: '*/1 * * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
