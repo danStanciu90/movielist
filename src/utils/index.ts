@@ -1,14 +1,14 @@
-import moment from "moment";
-import { getMovieById } from "../api";
-import { IDBMovie, IDetailedMovie } from "../screens/MovieList";
+import moment from 'moment';
+import { getMovieById } from '../api';
+import { IDBMovie, IDetailedMovie } from '../screens/MovieList';
 
 export const calculateAvailability = (movie: IDetailedMovie) => {
-  if (movie.dvd && movie.dvd !== "N/A") {
+  if (movie.dvd && movie.dvd !== 'N/A') {
     let dvdDate = Date.parse(movie.dvd);
     if (Date.now() > dvdDate) return true;
     else return false;
-  } else if (movie.released) {
-    let releaseDate = Date.parse(movie.released.toString());
+  } else if (movie.released.seconds) {
+    let releaseDate = Date.parse(movie.released.seconds.toString());
     let newDate = new Date();
     newDate.setMonth(newDate.getMonth() - 3);
     let dateToCalculate = Date.parse(newDate.toString());
@@ -18,17 +18,12 @@ export const calculateAvailability = (movie: IDetailedMovie) => {
   return false;
 };
 
-export const getMovieExcitement = (
-  movie: IDetailedMovie,
-  dbMovies: IDBMovie[]
-) => {
-  const target = dbMovies.find(el => el.imdbid === movie.imdbid);
+export const getMovieExcitement = (movie: IDetailedMovie, dbMovies: IDBMovie[]) => {
+  const target = dbMovies.find((el) => el.imdbid === movie.imdbid);
   return target && target.excitement ? target.excitement : 0;
 };
 
-export const parseMovies: (
-  movies: IDBMovie[]
-) => Promise<IDetailedMovie[]> = movies => {
+export const parseMovies: (movies: IDBMovie[]) => Promise<IDetailedMovie[]> = (movies) => {
   return new Promise((resolve, reject) => {
     let parsedMovies: IDetailedMovie[] = [];
     let promiseArray: Promise<IDetailedMovie>[] = [];
@@ -38,11 +33,9 @@ export const parseMovies: (
     });
 
     Promise.all(promiseArray)
-      .then(detailedMovies => {
+      .then((detailedMovies) => {
         detailedMovies.forEach((detailedMovie: IDetailedMovie) => {
-          detailedMovie.releasedFmt = moment(detailedMovie.released).format(
-            "DD/MM/YYYY"
-          );
+          detailedMovie.releasedFmt = moment(detailedMovie.released).format('DD/MM/YYYY');
           detailedMovie.ready = calculateAvailability(detailedMovie);
           detailedMovie.excitement = getMovieExcitement(detailedMovie, movies);
           parsedMovies.push(detailedMovie);
@@ -50,7 +43,7 @@ export const parseMovies: (
 
         return resolve(parsedMovies);
       })
-      .catch(err => {
+      .catch((err) => {
         return reject(err);
       });
   });
