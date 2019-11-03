@@ -3,7 +3,7 @@ name: Update DB
 on:
   schedule:
     # - cron: '* 23 * * *'
-    - cron: '*/1 * * * *'
+    - cron: '* * * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
