@@ -8,7 +8,7 @@ export const calculateAvailability = (movie: IDetailedMovie) => {
     if (Date.now() > dvdDate) return true;
     else return false;
   } else if (movie.released.seconds) {
-    let releaseDate = Date.parse(movie.released.seconds.toString());
+    let releaseDate = Date.parse((movie.released.seconds * 1000).toString());
     let newDate = new Date();
     newDate.setMonth(newDate.getMonth() - 3);
     let dateToCalculate = Date.parse(newDate.toString());

@@ -55,7 +55,7 @@ export const MovieList: FunctionComponent = () => {
     getAllMovies()
       .then(async (dbMovies: IDetailedMovie[]) => {
         dbMovies.forEach((dbMovie: IDetailedMovie) => {
-          dbMovie.releasedFmt = moment(dbMovie.released.seconds).format('DD/MM/YYYY');
+          dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
           dbMovie.ready = calculateAvailability(dbMovie);
         });
         setMovies(dbMovies);
