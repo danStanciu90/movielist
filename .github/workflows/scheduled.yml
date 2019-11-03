@@ -1,14 +1,16 @@
 name: Update DB
 
 on:
-  schedule:
-    # - cron: '* 23 * * *'
-    - cron: '* * * * *'
-
+  push
+  # schedule:
+  #   # - cron: '* 23 * * *'
+  #   - cron: '* * * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Test Script
-        run: echo "It is working"
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: >
+          npm install -g yarn
+          && yarn install
