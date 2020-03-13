@@ -8,7 +8,6 @@ import { deleteMovie, getAllMovies, updateMovieField } from '../../api';
 import { Alert } from '../../components/Alert';
 import { MovieDetail } from '../../components/MovieDetail';
 import { useWindowSize } from '../../hooks/useWindowSize';
-import { calculateAvailability } from '../../utils';
 
 export interface IDBMovie {
   imdbid: string;
@@ -55,9 +54,9 @@ export const MovieList: FunctionComponent = () => {
   const getTableData = async () => {
     getAllMovies()
       .then(async (dbMovies: IDetailedMovie[]) => {
+        backupMovies(dbMovies);
         dbMovies.forEach((dbMovie: IDetailedMovie) => {
           dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
-          dbMovie.ready = calculateAvailability(dbMovie);
         });
         setMovies(dbMovies);
         setLoading(false);
@@ -102,6 +101,7 @@ export const MovieList: FunctionComponent = () => {
       }
       setMovies(movieArray);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log('error updating the movie', error);
     }
   };

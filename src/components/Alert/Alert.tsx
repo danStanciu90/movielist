@@ -1,4 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
 
 export interface IAlertProps {
@@ -33,7 +40,7 @@ export const Alert: FunctionComponent<IAlertProps> = ({
         <Button color="secondary" onClick={onCancel}>
           {cancelBtnText}
         </Button>
-        <Button autoFocus color="primary" onClick={onSuccess}={true}>
+        <Button autoFocus={true} color="primary" onClick={onSuccess}>
           {successBtnText}
         </Button>
       </DialogActions>

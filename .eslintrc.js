@@ -12,5 +12,7 @@ module.exports = {
     'react/no-array-index-key': 'off',
     'react/display-name': 'off',
     'react/jsx-no-useless-fragment': 'off',
+    '@typescript-eslint/prefer-optional-chain': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
   },
 };

@@ -1,7 +1,9 @@
 import { IDBMovie, IDetailedMovie } from '../screens/MovieList';
 import { firebase } from '../utils/firebase';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const imdb = require('imdb-api');
+
 const imdbClient = new imdb.Client({
   apiKey: `${process.env.REACT_APP_IMDB_API_KEY}`,
 });
@@ -38,9 +40,11 @@ export const deleteMovie = async (imdbid: string) => {
   try {
     const moviesQuery = moviesdb.where('imdbid', '==', imdbid);
     const snapshot = await moviesQuery.get();
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     snapshot.forEach(async (item) => {
       await item.ref.delete();
     });
+
     return 'ok';
   } catch (error) {
     throw error;
@@ -49,12 +53,14 @@ export const deleteMovie = async (imdbid: string) => {
 
 export const searchMovie = async (title: string) => {
   try {
-    let response = await imdbClient.search({ name: title });
+    const response = await imdbClient.search({ name: title });
+
     return response.results;
   } catch (error) {
-    if(error.message.includes("Movie not found")) {
+    if (error.message.includes('Movie not found')) {
       const movie = await getMovieById(title);
-      return [movie]
+
+      return [movie];
     }
     throw error;
   }
