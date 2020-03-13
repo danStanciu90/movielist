@@ -54,7 +54,6 @@ export const MovieList: FunctionComponent = () => {
   const getTableData = async () => {
     getAllMovies()
       .then(async (dbMovies: IDetailedMovie[]) => {
-        backupMovies(dbMovies);
         dbMovies.forEach((dbMovie: IDetailedMovie) => {
           dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
         });
