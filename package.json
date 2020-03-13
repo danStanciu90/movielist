@@ -24,6 +24,7 @@
     "@lego/eslint-config-typescript": "1.9.0",
     "@lego/prettier-config": "1.10.8",
     "@lego/tslint-config": "2.4.0",
+    "@material-ui/styles": "4.9.0",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.5",
     "@types/react": "16.9.2",

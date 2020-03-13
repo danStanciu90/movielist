@@ -82,15 +82,13 @@ export const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
+        <Typography variant="h5">Sign in</Typography>
         <Typography style={{ color: '#ff0000', margin: '30px auto' }} variant="body1">
           {errMessage}
         </Typography>
