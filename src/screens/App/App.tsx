@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { MovieList } from '../MovieList';
-import { AddMovie } from '../AddMovie';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { HeaderWithRouter } from '../../components/Header';
+import { AddMovie } from '../AddMovie';
+import { MovieList } from '../MovieList';
 
 export const App: FunctionComponent = () => {
   return (
@@ -10,10 +10,10 @@ export const App: FunctionComponent = () => {
       <HeaderWithRouter />
       <div style={{ marginTop: 20, padding: 20, paddingTop: 0 }}>
         <Switch>
-          <Route exact path="/" component={MovieList} />
-          <Route path="/add" component={AddMovie} />
+          <Route component={MovieList} exact={true} path="/" />
+          <Route component={AddMovie} path="/add" />
         </Switch>
       </div>
     </Router>
-  )
-}
+  );
+};

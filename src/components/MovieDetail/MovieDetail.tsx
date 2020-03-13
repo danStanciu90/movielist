@@ -44,9 +44,9 @@ export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
         }}
       >
         <img
+          alt="movie-poster"
           src={movie.poster}
           style={{ maxHeight: 200, textAlign: 'center' }}
-          alt="movie-poster"
         />
       </div>
       <div style={{ flex: 4 }}>
@@ -55,17 +55,18 @@ export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
         </Typography>
         <MovieDetailListItem name="Rating: " value={`${movie.rating}`} />
         <MovieDetailListItem
-          name="Excitement: "
           component={
             <StyledRating
-              value={movie.excitement}
               icon={<FavoriteIcon fontSize="inherit" />}
+              name="MovieRating"
+              // eslint-disable-next-line react/jsx-no-bind
               onChange={(_event: ChangeEvent<{}>, value: number) =>
                 onExcitementChange(movie.imdbid, value)
               }
-              name="MovieRating"
+              value={movie.excitement}
             />
           }
+          name="Excitement: "
         />
         <MovieDetailListItem name="Release Date: " value={`${movie.releasedFmt}`} />
         {movie.dvd && <MovieDetailListItem name="DVD Release Date: " value={`${movie.dvd}`} />}

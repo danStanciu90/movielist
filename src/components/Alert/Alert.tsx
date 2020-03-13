@@ -1,5 +1,5 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@material-ui/core';
 
 export interface IAlertProps {
   open: boolean;
@@ -10,28 +10,33 @@ export interface IAlertProps {
   onCancel(): void;
   onSuccess(): void;
 }
-export const Alert: FunctionComponent<IAlertProps> = ({ open, onCancel, onSuccess, title, message, cancelBtnText = "Cancel", successBtnText = 'OK' }) => {
+export const Alert: FunctionComponent<IAlertProps> = ({
+  open,
+  onCancel,
+  onSuccess,
+  title,
+  message,
+  cancelBtnText = 'Cancel',
+  successBtnText = 'OK',
+}) => {
   return (
     <Dialog
-      open={open}
-      aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      aria-labelledby="alert-dialog-title"
+      open={open}
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {message}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel} color="secondary">
+        <Button color="secondary" onClick={onCancel}>
           {cancelBtnText}
         </Button>
-        <Button onClick={onSuccess} color="primary" autoFocus>
+        <Button autoFocus color="primary" onClick={onSuccess}={true}>
           {successBtnText}
         </Button>
       </DialogActions>
     </Dialog>
-
-  )
-}
+  );
+};

@@ -1,9 +1,9 @@
 {
   "recommendations": [
-    "shinnn.stylelint",
+    "dbaeumer.vscode-eslint",
     "EditorConfig.editorconfig",
     "esbenp.prettier-vscode",
-    "zengxingxin.sort-js-object-keys",
-    "eg2.tslint"
+    "hex-ci.stylelint-plus",
+    "zengxingxin.sort-js-object-keys"
   ]
 }

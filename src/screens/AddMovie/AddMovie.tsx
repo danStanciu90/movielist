@@ -1,17 +1,17 @@
-import { Container, List } from "@material-ui/core";
-import React, { Fragment, FunctionComponent, useState } from "react";
-import { addMovie, searchMovie } from "../../api";
-import { ExcitementDialog } from "../../components/ExcitementDialog";
-import { LoadingOverlay } from "../../components/LoadingOverlay/LoadingOverlay";
-import { MovieListItem } from "../../components/MovieListItem";
-import { Searchbar } from "../../components/Searchbar";
+import { Container, List } from '@material-ui/core';
+import React, { Fragment, FunctionComponent, useState } from 'react';
+import { addMovie, searchMovie } from '../../api';
+import { ExcitementDialog } from '../../components/ExcitementDialog';
+import { LoadingOverlay } from '../../components/LoadingOverlay/LoadingOverlay';
+import { MovieListItem } from '../../components/MovieListItem';
+import { Searchbar } from '../../components/Searchbar';
 
 export const AddMovie: FunctionComponent = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [movieToAdd, setMovieToAdd] = useState("");
+  const [movieToAdd, setMovieToAdd] = useState('');
   const [excitementLevel, setExcitementLevel] = useState(0);
 
   const handleSearchRequest = async () => {
@@ -19,9 +19,10 @@ export const AddMovie: FunctionComponent = () => {
       const results = await searchMovie(searchQuery);
       setSearchResults(results);
     } catch (error) {
-      console.log("error searching for the movie", error);
+      // eslint-disable-next-line no-console
+      console.log('error searching for the movie', error);
     } finally {
-      setSearchQuery("");
+      setSearchQuery('');
     }
   };
 
@@ -34,9 +35,10 @@ export const AddMovie: FunctionComponent = () => {
     try {
       setLoading(true);
       await addMovie(movieToAdd, excitementLevel);
-      window.open("/", "_self");
+      window.open('/', '_self');
     } catch (error) {
-      console.log("error adding a movie");
+      // eslint-disable-next-line no-console
+      console.log('error adding a movie');
       setLoading(false);
       setShowModal(false);
     }
@@ -46,10 +48,7 @@ export const AddMovie: FunctionComponent = () => {
     setShowModal(false);
   };
 
-  const handleExcitementChange = (
-    _event: React.ChangeEvent<{}>,
-    value: number
-  ) => {
+  const handleExcitementChange = (_event: React.ChangeEvent<{}>, value: number) => {
     setExcitementLevel(value);
   };
 
@@ -57,18 +56,18 @@ export const AddMovie: FunctionComponent = () => {
     <Fragment>
       <Container>
         <Searchbar
-          onChange={setSearchQuery}
-          onSearchRequest={handleSearchRequest}
           inputValue={searchQuery}
           label="Movie title"
+          onChange={setSearchQuery}
+          onSearchRequest={handleSearchRequest}
         />
         {searchResults.length ? (
           <List>
             {searchResults.map((movie, index) => (
               <MovieListItem
+                key={`SearchResults-MovieItem-${index}`}
                 movie={movie}
                 onClick={handleMovieClick}
-                key={`SearchResults-MovieItem-${index}`}
               />
             ))}
           </List>
@@ -76,11 +75,11 @@ export const AddMovie: FunctionComponent = () => {
           <div>No movie found</div>
         )}
         <ExcitementDialog
-          show={showModal}
           excitementLevel={excitementLevel}
-          onClose={handleClose}
           onAddMovie={handleAddMovie}
+          onClose={handleClose}
           onExcitementChange={handleExcitementChange}
+          show={showModal}
         />
       </Container>
       {loading && <LoadingOverlay />}

@@ -48,6 +48,7 @@ export const MovieList: FunctionComponent = () => {
   const { width } = useWindowSize();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     getTableData();
   }, []);
 
@@ -61,6 +62,7 @@ export const MovieList: FunctionComponent = () => {
         setMovies(dbMovies);
         setLoading(false);
       })
+      // eslint-disable-next-line no-console
       .catch((err) => console.log('error getting the movies', err));
   };
 
@@ -74,6 +76,7 @@ export const MovieList: FunctionComponent = () => {
       setMovies(remaining);
       setDeleteAlertOpen(false);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log('error deleting the movie', error);
     }
   };
@@ -109,7 +112,8 @@ export const MovieList: FunctionComponent = () => {
 
   const tableActions: (
     | Action<IDetailedMovie>
-    | ((rowData: IDetailedMovie) => Action<IDetailedMovie>))[] = [
+    | ((rowData: IDetailedMovie) => Action<IDetailedMovie>)
+  )[] = [
     {
       icon: () => <DeleteForever color="secondary" />,
       tooltip: 'Delete',
@@ -133,12 +137,13 @@ export const MovieList: FunctionComponent = () => {
     {
       title: 'Excitement',
       field: 'excitement',
+      // eslint-disable-next-line react/display-name
       render: (data) => (
         <StyledRating
-          name="Excitement Level"
-          value={data.excitement}
           icon={<Favorite fontSize="inherit" />}
-          readOnly
+          name="Excitement Level"
+          readOnly={true}
+          value={data.excitement}
         />
       ),
     },
@@ -164,24 +169,24 @@ export const MovieList: FunctionComponent = () => {
   return (
     <Fragment>
       <MaterialTable
+        actions={tableActions}
         columns={tableColumns}
         data={movies}
-        options={{ paging: false, detailPanelType: 'single' }}
-        isLoading={loading}
-        title=""
-        actions={tableActions}
         detailPanel={renderDetailPanel}
+        isLoading={loading}
         onRowClick={handleRowClick}
+        options={{ paging: false, detailPanelType: 'single' }}
+        title=""
       />
       <Alert
-        open={deleteAlertOpen}
-        title={`Delete "${movieToDelete ? movieToDelete.title : 'movie'}"`}
         message="Are you sure you want to delete this movie?"
         onCancel={() => {
           setDeleteAlertOpen(false);
           setMovieToDelete(undefined);
         }}
         onSuccess={handleDeleteMovie}
+        open={deleteAlertOpen}
+        title={`Delete "${movieToDelete ? movieToDelete.title : 'movie'}"`}
       />
     </Fragment>
   );

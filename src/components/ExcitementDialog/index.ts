@@ -1,1 +1,1 @@
-export * from "./ExcitementDialog";
+export * from './ExcitementDialog';

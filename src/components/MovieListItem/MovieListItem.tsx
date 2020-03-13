@@ -1,5 +1,5 @@
+import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
-import { ListItem, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
 
 export interface ISearchMovie {
   imdbid: string;
@@ -17,13 +17,11 @@ export interface IMovieListItemProps {
 
 export const MovieListItem: FunctionComponent<IMovieListItemProps> = ({ movie, onClick }) => {
   return (
-    <ListItem button onClick={() => onClick(movie.imdbid)}>
+    <ListItem button={true} onClick={() => onClick(movie.imdbid)}>
       <ListItemAvatar>
         <Avatar src={movie.poster} style={{ width: 60, height: 60, marginRight: 20 }} />
       </ListItemAvatar>
-      <ListItemText>
-        {`${movie.title} (${movie.year})`}
-      </ListItemText>
+      <ListItemText>{`${movie.title} (${movie.year})`}</ListItemText>
     </ListItem>
-  )
-}
+  );
+};

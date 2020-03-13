@@ -4,11 +4,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  withStyles
-} from "@material-ui/core";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import { Rating } from "@material-ui/lab";
-import React, { FunctionComponent } from "react";
+  withStyles,
+} from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { Rating } from '@material-ui/lab';
+import React, { FunctionComponent } from 'react';
 
 export interface IExcitementDialogProps {
   show: boolean;
@@ -20,11 +20,11 @@ export interface IExcitementDialogProps {
 
 const StyledRating = withStyles({
   iconFilled: {
-    color: "#f50057"
+    color: '#f50057',
   },
   iconHover: {
-    color: "#c51162"
-  }
+    color: '#c51162',
+  },
 })(Rating);
 
 export const ExcitementDialog: FunctionComponent<IExcitementDialogProps> = ({
@@ -32,29 +32,29 @@ export const ExcitementDialog: FunctionComponent<IExcitementDialogProps> = ({
   onClose,
   excitementLevel,
   onExcitementChange,
-  onAddMovie
+  onAddMovie,
 }) => {
   return (
-    <Dialog open={show} onClose={onClose} aria-labelledby="form-dialog-title">
+    <Dialog aria-labelledby="form-dialog-title" onClose={onClose} open={show}>
       <DialogTitle id="form-dialog-title">Excitement level</DialogTitle>
       <DialogContent
         style={{
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex"
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
         }}
       >
         <StyledRating
-          value={excitementLevel}
           icon={<FavoriteIcon fontSize="inherit" />}
           onChange={onExcitementChange}
+          value={excitementLevel}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button color="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={onAddMovie} color="primary">
+        <Button color="primary" onClick={onAddMovie}>
           Add Movie
         </Button>
       </DialogActions>
