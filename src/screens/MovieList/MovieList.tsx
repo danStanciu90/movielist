@@ -1,6 +1,7 @@
 import { DeleteForever, Favorite } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { withStyles } from '@material-ui/styles';
+import firebase from 'firebase';
 import MaterialTable, { Action, Column } from 'material-table';
 import moment from 'moment';
 import React, { Fragment, FunctionComponent, MouseEvent, useEffect, useState } from 'react';
@@ -52,16 +53,22 @@ export const MovieList: FunctionComponent = () => {
   }, []);
 
   const getTableData = async () => {
-    getAllMovies()
-      .then(async (dbMovies: IDetailedMovie[]) => {
-        dbMovies.forEach((dbMovie: IDetailedMovie) => {
-          dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
-        });
-        setMovies(dbMovies);
-        setLoading(false);
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log('error getting the movies', err));
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        window.open('/signin', '_self');
+      } else {
+        getAllMovies()
+          .then(async (dbMovies: IDetailedMovie[]) => {
+            dbMovies.forEach((dbMovie: IDetailedMovie) => {
+              dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
+            });
+            setMovies(dbMovies);
+            setLoading(false);
+          })
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log('error getting the movies', err));
+      }
+    });
   };
 
   const handleDeleteMovie = async () => {

@@ -18,4 +18,18 @@ export const firebaseInit = () => {
 };
 firebaseInit();
 
+export const getUserToken: () => Promise<string> = async () => {
+  try {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+    const token = await user.getIdToken(true);
+
+    return token;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export { firebase };

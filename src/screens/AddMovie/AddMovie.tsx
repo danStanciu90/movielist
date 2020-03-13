@@ -1,5 +1,6 @@
 import { Container, List } from '@material-ui/core';
-import React, { Fragment, FunctionComponent, useState } from 'react';
+import firebase from 'firebase';
+import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import { addMovie, searchMovie } from '../../api';
 import { ExcitementDialog } from '../../components/ExcitementDialog';
 import { LoadingOverlay } from '../../components/LoadingOverlay/LoadingOverlay';
@@ -14,6 +15,14 @@ export const AddMovie: FunctionComponent = () => {
   const [movieToAdd, setMovieToAdd] = useState('');
   const [excitementLevel, setExcitementLevel] = useState(0);
 
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        window.open('/signin', '_self');
+      }
+    });
+  }, []);
+
   const handleSearchRequest = async () => {
     try {
       const results = await searchMovie(searchQuery);
@@ -26,7 +35,7 @@ export const AddMovie: FunctionComponent = () => {
     }
   };
 
-  const handleMovieClick = async (movieId: string) => {
+  const handleMovieClick = (movieId: string) => {
     setMovieToAdd(movieId);
     setShowModal(true);
   };

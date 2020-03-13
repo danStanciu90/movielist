@@ -70,3 +70,13 @@ export const parseMovies: (movies: IDBMovie[]) => Promise<IDetailedMovie[]> = (m
       });
   });
 };
+
+// eslint-disable-next-line require-unicode-regexp
+export const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+export const validateEmail: (email: string) => boolean = (email) => {
+  // eslint-disable-next-line require-unicode-regexp
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  return re.test(email.toLowerCase());
+};
