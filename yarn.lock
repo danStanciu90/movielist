@@ -1515,7 +1515,7 @@
 
 "@lego/eslint-config-prettier@1.8.0":
   version "1.8.0"
-  resolved "https://npm.pkg.github.com/download/@lego/eslint-config-prettier/1.8.0/4b69725c216f278fa9441db7d5e2ea99c37efa40f3478291454f51c91e271723#9849f4bcf5fb881a16bd1c627ec1eefd8aa9c499"
+  resolved "https://registry.yarnpkg.com/@lego/eslint-config-prettier/-/eslint-config-prettier-1.8.0.tgz#9849f4bcf5fb881a16bd1c627ec1eefd8aa9c499"
   integrity sha512-IVMjnXW0JZCKseO8N+YqHAaDrlP4W2/NCQKR9uJL6NlFuk/KUQVvm3yGTiqLHfPtsD1hSXA8XYHIxI1QpmRCPw==
   dependencies:
     "@lego/prettier-config" "1.16.0"
@@ -1526,7 +1526,7 @@
 
 "@lego/eslint-config-react@1.9.0":
   version "1.9.0"
-  resolved "https://npm.pkg.github.com/download/@lego/eslint-config-react/1.9.0/d58253cf07f20ac92b20992a17dca9adc48c6b5d2319f46afc03aa91d5f43ce6#c9961cdae626b51425d9f2d30b2381323b024394"
+  resolved "https://registry.yarnpkg.com/@lego/eslint-config-react/-/eslint-config-react-1.9.0.tgz#c9961cdae626b51425d9f2d30b2381323b024394"
   integrity sha512-olbRi/Y6hgMJG4nifPB1iAu/5lyPcg89PWiW5FiOXj9FtGJ7BHgIom68s14Pm0GmJDqv5gwjCAvBoQFTHM/41A==
   dependencies:
     eslint "6.8.0"
@@ -1535,7 +1535,7 @@
 
 "@lego/eslint-config-typescript@1.9.0":
   version "1.9.0"
-  resolved "https://npm.pkg.github.com/download/@lego/eslint-config-typescript/1.9.0/4b12f0ee76d77adb6f51fa7f286e2bf5c09ebca94eb2529d5072dba90d496a09#c7b3f8a5bc50af80ead12ef1f2c18847e7556180"
+  resolved "https://registry.yarnpkg.com/@lego/eslint-config-typescript/-/eslint-config-typescript-1.9.0.tgz#c7b3f8a5bc50af80ead12ef1f2c18847e7556180"
   integrity sha512-M6nmrLw/jeJUfgWTIkg/HwvZqvDlTvEOsPA1C3gFI8QB/GVDEtlWeTFDVbKt6cOd3bysRsKJlmmy2QqJg6xCaw==
   dependencies:
     "@lego/eslint-config" "1.8.0"
@@ -1548,7 +1548,7 @@
 
 "@lego/eslint-config@1.8.0":
   version "1.8.0"
-  resolved "https://npm.pkg.github.com/download/@lego/eslint-config/1.8.0/4505e937c3d30d39639ef8e8f4e7138cf8f6a35c0074e30103b61bec13513e41#e00f73f2c067a4955cf3e2cd272976b41b8932cd"
+  resolved "https://registry.yarnpkg.com/@lego/eslint-config/-/eslint-config-1.8.0.tgz#e00f73f2c067a4955cf3e2cd272976b41b8932cd"
   integrity sha512-Hkiz3HWvFuqZwJ8A/hQcFmy9fOXiRkEqbeHGgLpSo5XCpOktkgDGnL3Kmqu0cX0Ne8pbLGAELDkVx7oh+8BTnw==
   dependencies:
     eslint "6.8.0"
@@ -1558,21 +1558,21 @@
 
 "@lego/prettier-config@1.10.8":
   version "1.10.8"
-  resolved "https://npm.pkg.github.com/download/@lego/prettier-config/1.10.8/51f3719208dc0d24c1d2753291f07307792938029e099bb25fa2b9982369b8f9#b277805dfeed9db755e38385c047cf3e8f14e868"
+  resolved "https://registry.yarnpkg.com/@lego/prettier-config/-/prettier-config-1.10.8.tgz#b277805dfeed9db755e38385c047cf3e8f14e868"
   integrity sha512-0YCrCFIFS+AkId4C4NNgPHSkUd3ByhTmthklhpnBxK5IyGYbxVVXHBwrO7ZICcqc/5sUVuqs968jRxCXQFuqbg==
   dependencies:
     prettier "1.18.2"
 
 "@lego/prettier-config@1.16.0":
   version "1.16.0"
-  resolved "https://npm.pkg.github.com/download/@lego/prettier-config/1.16.0/8683339d2ca517f74001d2368ffe63cf5fc5bc5742ec99e361777861e3469a8d#aaccc80dfd7090d2a8aad832a4e8c10abab2ba75"
+  resolved "https://registry.yarnpkg.com/@lego/prettier-config/-/prettier-config-1.16.0.tgz#aaccc80dfd7090d2a8aad832a4e8c10abab2ba75"
   integrity sha512-VSMCFarMuGLm3PISqGnFN4FyKNDfc70vLMQJlK7lqpqwDkiu1N1aPIUnc/DuJFgsQIP3ulIpdQG+kX6L7TKo/g==
   dependencies:
     prettier "1.19.1"
 
 "@lego/tslint-config-prettier@1.11.0":
   version "1.11.0"
-  resolved "https://npm.pkg.github.com/download/@lego/tslint-config-prettier/1.11.0/8a8b0ac88c801bd6820202e358d5ba0a2c70af354578dc027c0dde063004f5a7#bdc42cfda114898ea39b7d1dac1fc67b040c845f"
+  resolved "https://registry.yarnpkg.com/@lego/tslint-config-prettier/-/tslint-config-prettier-1.11.0.tgz#bdc42cfda114898ea39b7d1dac1fc67b040c845f"
   integrity sha512-rN8cYtcJBMRPVkokiiImDj7sdrXzbjd/LBYtDs/IhMbU8OGjUPNLgUWhkFu62Mwmnbv+ojQeMTvl2jfXRItU2Q==
   dependencies:
     "@lego/prettier-config" "1.10.8"
@@ -1582,7 +1582,7 @@
 
 "@lego/tslint-config@2.4.0":
   version "2.4.0"
-  resolved "https://npm.pkg.github.com/download/@lego/tslint-config/2.4.0/9c787b87709b5da611b05082d9b46668a2529ce101f9823d4d364fec58278631#8c0e51bbc062bda04de356e7aae9b4924b3dd815"
+  resolved "https://registry.yarnpkg.com/@lego/tslint-config/-/tslint-config-2.4.0.tgz#8c0e51bbc062bda04de356e7aae9b4924b3dd815"
   integrity sha512-gTaXKaVsCAmXwKgAEtPc6QRSy9G5IHD9CQx9XrAmEuJpqmwkiUq8gHiTK/hnLEd1viIDKwYyMriFdJ6ZJJ29SQ==
   dependencies:
     "@lego/tslint-config-prettier" "1.11.0"
@@ -4120,9 +4120,9 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-url "^7.0.0"
 
 date-fns@^2.0.0-alpha.27:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.10.0.tgz#abd10604d8bafb0bcbd2ba2e9b0563b922ae4b6b"
-  integrity sha512-EhfEKevYGWhWlZbNeplfhIU/+N+x0iCIx7VzKlXma2EdQyznVlZhCptXUY+BegNpPW2kjdx15Rvq503YcXXrcA==
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.11.0.tgz#ec2b44977465b9dcb370021d5e6c019b19f36d06"
+  integrity sha512-8P1cDi8ebZyDxUyUprBXwidoEtiQAawYPGvpfb+Dg0G6JrQ+VozwOmm91xYC0vAv1+0VmLehEPb+isg4BGUFfA==
 
 debounce@^1.2.0:
   version "1.2.0"
@@ -8117,6 +8117,22 @@ node-notifier@^5.4.2:
     shellwords "^0.1.1"
     which "^1.3.0"
 
+node-pre-gyp@*:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
+  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
+  dependencies:
+    detect-libc "^1.0.2"
+    mkdirp "^0.5.1"
+    needle "^2.2.1"
+    nopt "^4.0.1"
+    npm-packlist "^1.1.6"
+    npmlog "^4.0.2"
+    rc "^1.2.7"
+    rimraf "^2.6.1"
+    semver "^5.3.0"
+    tar "^4.4.2"
+
 node-pre-gyp@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.13.0.tgz#df9ab7b68dd6498137717838e4f92a33fc9daa42"
@@ -11249,7 +11265,7 @@ tapable@^1.0.0, tapable@^1.1.0, tapable@^1.1.3:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
   integrity sha512-4WK/bYZmj8xLr+HUCODHGF1ZFzsYffasLUgEiMBY4fgtltdO6B4WJtlSbPaDTLpYTcGVwM2qLnFTICEcNxs3kA==
 
-tar@^4:
+tar@^4, tar@^4.4.2:
   version "4.4.13"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
   integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
@@ -12376,10 +12392,10 @@ yargs-parser@^10.1.0:
   dependencies:
     camelcase "^4.1.0"
 
-yargs-parser@^13.1.1:
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.1.1.tgz#d26058532aa06d365fe091f6a1fc06b2f7e5eca0"
-  integrity sha512-oVAVsHz6uFrg3XQheFII8ESO2ssAf9luWuAd6Wexsu4F3OtIW0o8IribPXYrD4WC24LWtPrJlGy87y5udK+dxQ==
+yargs-parser@^13.1.2:
+  version "13.1.2"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.1.2.tgz#130f09702ebaeef2650d54ce6e3e5706f7a4fb38"
+  integrity sha512-3lbsNRf/j+A4QuSZfDRA7HRSfWrzO0YjqTJd5kjAq37Zep1CEgaYmrH9Q3GwPiB9cHyd1Y1UwggGhJGoxipbzg==
   dependencies:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
@@ -12403,9 +12419,9 @@ yargs@12.0.2:
     yargs-parser "^10.1.0"
 
 yargs@^13.3.0:
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.0.tgz#4c657a55e07e5f2cf947f8a366567c04a0dedc83"
-  integrity sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
+  version "13.3.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.2.tgz#ad7ffefec1aa59565ac915f82dccb38a9c31a2dd"
+  integrity sha512-AX3Zw5iPruN5ie6xGRIDgqkT+ZhnRlZMLMHAs8tg7nRruy2Nb+i5o9bwghAogtM08q1dpr2LVoS8KSTMYpWXUw==
   dependencies:
     cliui "^5.0.0"
     find-up "^3.0.0"
@@ -12416,7 +12432,7 @@ yargs@^13.3.0:
     string-width "^3.0.0"
     which-module "^2.0.0"
     y18n "^4.0.0"
-    yargs-parser "^13.1.1"
+    yargs-parser "^13.1.2"
 
 yargs@^3.10.0:
   version "3.32.0"
