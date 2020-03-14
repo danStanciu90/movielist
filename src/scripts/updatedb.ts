@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+import firebase from 'firebase';
 import { getAllMovies, getMovieById, updateMovie } from '../api';
 import { IDetailedMovie } from '../screens/MovieList';
 import { getFLReady } from '../utils';
@@ -8,6 +9,12 @@ import { getFLReady } from '../utils';
 // firebaseInit();
 const updateDb = async () => {
   try {
+    console.log('Authenticating to firebase');
+    const { REACT_APP_USER_EMAIL, REACT_APP_USER_PWD } = process.env;
+    if (!REACT_APP_USER_EMAIL || !REACT_APP_USER_PWD) {
+      throw new Error('Missing environment variables');
+    }
+    await firebase.auth().signInWithEmailAndPassword(REACT_APP_USER_EMAIL, REACT_APP_USER_PWD);
     const dbMovies = await getAllMovies();
     const allMoviesArray: Promise<any>[] = [];
     console.log('All movies received');
@@ -35,13 +42,15 @@ const updateDb = async () => {
             // eslint-disable-next-line no-process-exit
             process.exit(0);
           })
-          .catch((err) => console.log('error updating movies', err));
+          .catch((err) => {
+            throw err;
+          });
       })
       .catch((err) => {
-        console.log('error getting movie details from imdb', err);
+        throw err;
       });
   } catch (error) {
-    console.log('error: ', error);
+    throw error;
   }
 };
 
