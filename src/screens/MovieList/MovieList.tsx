@@ -28,7 +28,7 @@ export interface IDetailedMovie {
   title: string;
   rating: number;
   year: number;
-  released: any;
+  released: { seconds: number; nanoseconds: number };
   releasedFmt: string;
   poster: string;
   dvd?: string;
@@ -52,13 +52,13 @@ export const MovieList: FunctionComponent = () => {
     getTableData();
   }, []);
 
-  const getTableData = async () => {
+  const getTableData = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         window.open('/signin', '_self');
       } else {
         getAllMovies()
-          .then(async (dbMovies: IDetailedMovie[]) => {
+          .then((dbMovies: IDetailedMovie[]) => {
             dbMovies.forEach((dbMovie: IDetailedMovie) => {
               dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
             });
@@ -118,8 +118,7 @@ export const MovieList: FunctionComponent = () => {
 
   const tableActions: (
     | Action<IDetailedMovie>
-    | ((rowData: IDetailedMovie) => Action<IDetailedMovie>)
-  )[] = [
+    | ((rowData: IDetailedMovie) => Action<IDetailedMovie>))[] = [
     {
       icon: () => <DeleteForever color="secondary" />,
       tooltip: 'Delete',
@@ -138,7 +137,7 @@ export const MovieList: FunctionComponent = () => {
     {
       title: 'Release  Date',
       field: 'releasedFmt',
-      customSort: (a, b) => a.released.getTime() - b.released.getTime(),
+      customSort: (a, b) => a.released.seconds - b.released.seconds,
     },
     {
       title: 'Excitement',
