@@ -25,12 +25,12 @@ const updateDb: () => Promise<void> = async () => {
     console.log('All movie details from FL received');
     imdbMovies.forEach((imdbMovie) => {
       const flMovie = flMovies.find((m) => m.imdbid === imdbMovie.imdbid);
-      imdbMovie.ready = flMovie && flMovie.flReady;
+      imdbMovie.ready = flMovie && flMovie.flReady ? flMovie.flReady : false;
     });
 
     const updateMoviesArray = imdbMovies.map((movie) => updateMovie(movie));
-    console.log('All movies updated');
     await Promise.all(updateMoviesArray);
+    console.log('All movies updated');
 
     // eslint-disable-next-line no-process-exit
     process.exit(0);

@@ -13,7 +13,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
-export const firebaseInit = () => {
+export const firebaseInit: () => void = () => {
   firebase.initializeApp(firebaseConfig);
 };
 firebaseInit();
@@ -33,3 +33,4 @@ export const getUserToken: () => Promise<string> = async () => {
 };
 
 export { firebase };
+

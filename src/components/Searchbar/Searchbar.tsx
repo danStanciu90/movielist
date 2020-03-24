@@ -1,5 +1,5 @@
-import React, { Fragment, FunctionComponent, ChangeEvent } from 'react';
-import { TextField, Icon, Button } from '@material-ui/core';
+import { Button, Icon, TextField } from '@material-ui/core';
+import React, { ChangeEvent, Fragment, FunctionComponent } from 'react';
 
 export interface ISearchbarProps {
   onChange(query: string): void;
@@ -9,18 +9,20 @@ export interface ISearchbarProps {
 }
 
 export const Searchbar: FunctionComponent<ISearchbarProps> = ({
-  onChange, onSearchRequest, label = "Search here", inputValue
+  onChange,
+  onSearchRequest,
+  label = 'Search here',
+  inputValue,
 }) => {
-
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    onChange(event.target.value)
-  }
+    onChange(event.target.value);
+  };
 
   const handleKeyPress = (e: any) => {
     if (e.key === 'Enter') {
-      onSearchRequest()
+      onSearchRequest();
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -28,17 +30,22 @@ export const Searchbar: FunctionComponent<ISearchbarProps> = ({
         <TextField
           id="filled-name"
           label={label}
-          value={inputValue}
-          onChange={handleSearchChange}
           margin="normal"
-          style={{ flex: 1 }}
+          onChange={handleSearchChange}
           onKeyPress={handleKeyPress}
+          style={{ flex: 1 }}
+          value={inputValue}
         />
-        <Button color="primary" variant="contained" onClick={onSearchRequest} style={{ height: 'fit-content', marginLeft: 20 }}>
+        <Button
+          color="primary"
+          onClick={onSearchRequest}
+          style={{ height: 'fit-content', marginLeft: 20 }}
+          variant="contained"
+        >
           <Icon style={{ marginRight: 5 }}>search</Icon>
           Search
         </Button>
       </div>
     </Fragment>
-  )
-}
+  );
+};

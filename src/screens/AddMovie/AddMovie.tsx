@@ -6,10 +6,11 @@ import { ExcitementDialog } from '../../components/ExcitementDialog';
 import { LoadingOverlay } from '../../components/LoadingOverlay/LoadingOverlay';
 import { MovieListItem } from '../../components/MovieListItem';
 import { Searchbar } from '../../components/Searchbar';
+import { IDetailedMovie } from '../MovieList';
 
 export const AddMovie: FunctionComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<IDetailedMovie[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [movieToAdd, setMovieToAdd] = useState('');

@@ -1,17 +1,9 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
-
-export interface ISearchMovie {
-  imdbid: string;
-  name: string;
-  poster: string;
-  title: string;
-  type: string;
-  year: number;
-}
+import { IDetailedMovie } from '../../screens/MovieList';
 
 export interface IMovieListItemProps {
-  movie: ISearchMovie;
+  movie: IDetailedMovie;
   onClick(movieId: string): void;
 }
 

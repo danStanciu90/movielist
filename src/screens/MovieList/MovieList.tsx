@@ -135,7 +135,7 @@ export const MovieList: FunctionComponent = () => {
   let tableColumns: Column<IDetailedMovie>[] = [
     { title: 'Title', field: 'title' },
     {
-      title: 'Release  Date',
+      title: 'Release Date',
       field: 'releasedFmt',
       customSort: (a, b) => a.released.seconds - b.released.seconds,
     },

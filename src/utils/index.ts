@@ -22,20 +22,24 @@ export const calculateAvailability: (movie: IDetailedMovie) => boolean = (movie)
 export const getFLReady: (
   movie: IDetailedMovie
 ) => Promise<{ imdbid: string; flReady: boolean }> = async (movie) => {
-  const { data } = await axios.get('https://filelist.ro/api.php?', {
-    params: {
-      action: 'search-torrents',
-      type: 'imdb',
-      category: '4,19',
-      query: movie.imdbid,
-    },
-    auth: {
-      username: 'danstanciu90',
-      password: process.env.REACT_APP_FL_TOKEN || '',
-    },
-  });
+  try {
+    const { data } = await axios.get('https://filelist.ro/api.php?', {
+      params: {
+        action: 'search-torrents',
+        type: 'imdb',
+        category: '4,19',
+        query: movie.imdbid,
+      },
+      auth: {
+        username: 'danstanciu90',
+        password: process.env.REACT_APP_FL_TOKEN || '',
+      },
+    });
 
-  return { imdbid: movie.imdbid, flReady: data.length > 0 };
+    return { imdbid: movie.imdbid, flReady: data.length > 0 };
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getMovieExcitement: (movie: IDetailedMovie, dbMovies: IDBMovie[]) => number = (

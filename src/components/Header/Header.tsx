@@ -5,9 +5,9 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { AddMovieHeader } from '../AddMovieHeader/AddMovieHeader';
 import { HeaderTitle } from '../HeaderTitle';
 
-const Header: FunctionComponent<React.PropsWithChildren<
-  RouteComponentProps<any, StaticContext, any>
->> = ({ location }) => {
+const Header: FunctionComponent<
+  React.PropsWithChildren<RouteComponentProps<any, StaticContext, any>>
+> = ({ location }) => {
   const { pathname } = location;
   if (pathname === '/signin' || pathname === 'signup') {
     return <Fragment />;

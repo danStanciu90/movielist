@@ -1,4 +1,5 @@
-import { IDBMovie, IDetailedMovie } from '../screens/MovieList';
+/* eslint-disable no-console */
+import { IDetailedMovie } from '../screens/MovieList';
 import { firebase } from '../utils/firebase';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -9,11 +10,10 @@ const imdbClient = new imdb.Client({
 });
 const moviesdb = firebase.firestore().collection('movies');
 
-export const getMovieById = async (movieId: string) => {
-  return imdbClient.get({ id: movieId });
-};
+export const getMovieById: (movieId: string) => Promise<IDetailedMovie> = (movieId: string) =>
+  imdbClient.get({ id: movieId });
 
-export const getAllMovies = async () => {
+export const getAllMovies: () => Promise<IDetailedMovie[]> = async () => {
   try {
     const snapshot = await moviesdb.get();
     const movies = snapshot.docs.map((doc) => doc.data());
@@ -24,19 +24,23 @@ export const getAllMovies = async () => {
   }
 };
 
-export const addMovie = async (imdbid: string, excitement: number) => {
+export const addMovie: (imdbid: string, excitement: number) => Promise<void> = async (
+  imdbid,
+  excitement
+) => {
   try {
     const detailedMovie = await getMovieById(imdbid);
     await moviesdb.add({
       ...detailedMovie,
       excitement,
+      ready: false,
     });
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteMovie = async (imdbid: string) => {
+export const deleteMovie: (imdbid: string) => Promise<void> = async (imdbid: string) => {
   try {
     const moviesQuery = moviesdb.where('imdbid', '==', imdbid);
     const snapshot = await moviesQuery.get();
@@ -44,14 +48,12 @@ export const deleteMovie = async (imdbid: string) => {
     snapshot.forEach(async (item) => {
       await item.ref.delete();
     });
-
-    return 'ok';
   } catch (error) {
     throw error;
   }
 };
 
-export const searchMovie = async (title: string) => {
+export const searchMovie: (title: string) => Promise<IDetailedMovie[]> = async (title: string) => {
   try {
     const response = await imdbClient.search({ name: title });
 
@@ -66,11 +68,11 @@ export const searchMovie = async (title: string) => {
   }
 };
 
-export const updateMovieField = async (
+export const updateMovieField: (
   imdbid: string,
-  fieldToUpdate: keyof IDBMovie,
+  fieldToUpdate: 'imdbid' | 'excitement',
   value: string | number
-) => {
+) => Promise<void> = async (imdbid, fieldToUpdate, value) => {
   try {
     const moviesQuery = moviesdb.where('imdbid', '==', imdbid);
     const snapshot = await moviesQuery.get();
@@ -83,14 +85,18 @@ export const updateMovieField = async (
   }
 };
 
-export const updateMovie = async (newMovieDetails: any) => {
+export const updateMovie: (newMovieDetails: IDetailedMovie) => Promise<void> = async (
+  newMovieDetails
+) => {
   try {
     const moviesQuery = moviesdb.where('imdbid', '==', newMovieDetails.imdbid);
     const snapshot = await moviesQuery.get();
+    const promiseArray: Promise<void>[] = [];
     snapshot.forEach((doc) => {
-      const docData = doc.data();
-      doc.ref.set({ ...docData, ...newMovieDetails });
+      promiseArray.push(moviesdb.doc(doc.id).set({ ...newMovieDetails }));
+      // doc.ref.set({ ...docData, ...newMovieDetails });
     });
+    await Promise.all(promiseArray);
   } catch (error) {
     throw error;
   }
