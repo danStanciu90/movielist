@@ -19,7 +19,9 @@ export const calculateAvailability: (movie: IDetailedMovie) => boolean = (movie)
   return false;
 };
 
-export const getFLReady: (movie: IDetailedMovie) => Promise<boolean> = async (movie) => {
+export const getFLReady: (
+  movie: IDetailedMovie
+) => Promise<{ imdbid: string; flReady: boolean }> = async (movie) => {
   const { data } = await axios.get('https://filelist.ro/api.php?', {
     params: {
       action: 'search-torrents',
@@ -33,7 +35,7 @@ export const getFLReady: (movie: IDetailedMovie) => Promise<boolean> = async (mo
     },
   });
 
-  return data.length > 0;
+  return { imdbid: movie.imdbid, flReady: data.length > 0 };
 };
 
 export const getMovieExcitement: (movie: IDetailedMovie, dbMovies: IDBMovie[]) => number = (
