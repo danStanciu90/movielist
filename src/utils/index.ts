@@ -23,7 +23,7 @@ export const getFLReady: (
   movie: IDetailedMovie
 ) => Promise<{ imdbid: string; flReady: boolean }> = async (movie) => {
   try {
-    const { data } = await axios.get('https://filelist.ro/api.php?', {
+    const { data } = await axios.get('https://filelist.io/api.php?', {
       params: {
         action: 'search-torrents',
         type: 'imdb',
