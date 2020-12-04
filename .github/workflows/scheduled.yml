@@ -3,6 +3,8 @@ name: Update DB
 on:
   schedule:
     - cron: '0 0 * * *'
+  repository_dispatch:
+    types: [run_workflow]
 jobs:
   build:
     runs-on: ubuntu-latest
