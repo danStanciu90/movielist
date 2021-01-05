@@ -6,7 +6,7 @@
     "@material-ui/core": "4.4.2",
     "@material-ui/icons": "4.4.3",
     "@material-ui/lab": "4.0.0-alpha.28",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "firebase": "6.6.1",
     "imdb-api": "4.0.3",
     "material-table": "1.50.0",
