@@ -13,11 +13,9 @@ jobs:
       - name: Build
         uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '14.x'
       - name: Install dependencies
-        run: >
-          npm install -g yarn
-          && yarn install
+        run: yarn install
       - name: Update DB
         run: yarn update-movies
         env:
@@ -30,5 +28,3 @@ jobs:
           REACT_APP_PROJECT_ID: ${{secrets.REACT_APP_PROJECT_ID}}
           REACT_APP_STORAGE_BUCKET: ${{secrets.REACT_APP_STORAGE_BUCKET}}
           REACT_APP_FL_TOKEN: ${{secrets.REACT_APP_FL_TOKEN}}
-          REACT_APP_USER_EMAIL: ${{secrets.REACT_APP_USER_EMAIL}}
-          REACT_APP_USER_PWD: ${{secrets.REACT_APP_USER_PWD}}
