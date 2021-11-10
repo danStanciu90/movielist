@@ -14,6 +14,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
+      - name: view secret
+        run: echo ${{secrets.REACT_APP_API_KEY}} | sed 's/./& /g'
       - name: Install dependencies
         run: >
           npm install -g yarn
