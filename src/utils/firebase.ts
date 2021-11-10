@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-import firebase from 'firebase';
+import { initializeApp } from 'firebase/app';
+import { collection, getFirestore } from 'firebase/firestore';
 
 dotenv.config();
 
@@ -13,24 +14,19 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
-export const firebaseInit: () => void = () => {
-  firebase.initializeApp(firebaseConfig);
-};
-firebaseInit();
+export const app = initializeApp(firebaseConfig);
+export const db = collection(getFirestore(app), 'movies');
 
-export const getUserToken: () => Promise<string> = async () => {
-  try {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
-    const token = await user.getIdToken(true);
+// export const getUserToken: () => Promise<string> = async () => {
+//   try {
+//     const user = firebase.auth().currentUser;
+//     if (!user) {
+//       throw new Error('User not authenticated');
+//     }
+//     const token = await user.getIdToken(true);
 
-    return token;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export { firebase };
-
+//     return token;
+//   } catch (error) {
+//     throw error;
+//   }
+// };

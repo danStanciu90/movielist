@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  withStyles,
+  withStyles
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Rating } from '@material-ui/lab';
@@ -14,7 +14,7 @@ export interface IExcitementDialogProps {
   show: boolean;
   onClose(): void;
   excitementLevel: number;
-  onExcitementChange(event: React.ChangeEvent<{}>, value: number): void;
+  onExcitementChange(event: React.ChangeEvent<{}>, value: number | null): void;
   onAddMovie(): void;
 }
 

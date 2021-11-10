@@ -1,21 +1,54 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable no-console */
+import axios from 'axios';
+import { addDoc, deleteDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
+// import imdb from 'imdb-api';
 import { IDetailedMovie } from '../screens/MovieList';
-import { firebase } from '../utils/firebase';
-
+import { parseResponse } from '../utils';
+import { db } from '../utils/firebase';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const imdb = require('imdb-api');
+// const imdb = require('imdb-api');
 
-const imdbClient = new imdb.Client({
-  apiKey: `${process.env.REACT_APP_IMDB_API_KEY}`,
+// const imdbClient = new Client({
+//   apiKey: '50ca2246',
+//   // apiKey: 'AIzaSyA8jmwxGDSdexO-Ie4vanwZGi_VOQrXnwo',
+// });
+// //now
+// https://www.omdbapi.com/?apikey=50ca2246&s=venom&page=1&r=json
+// //old
+// https://www.omdbapi.com/?apikey=50ca2246&page=1&r=json&s=venom
+
+const imdbAxiosBaseParams = {
+  apiKey: '50ca2246',
+  r: 'json',
+};
+
+const imdbAxiosInstance = axios.create({
+  baseURL: 'https://www.omdbapi.com',
 });
-const moviesdb = firebase.firestore().collection('movies');
 
-export const getMovieById: (movieId: string) => Promise<IDetailedMovie> = (movieId: string) =>
-  imdbClient.get({ id: movieId });
+export const getMovieById = async (movieId: string): Promise<IDetailedMovie> => {
+  try {
+    const { data } = await imdbAxiosInstance.get<IDetailedMovie>('', {
+      params: { ...imdbAxiosBaseParams, i: movieId },
+    });
+
+    // @ts-ignore
+    if (data.Error) {
+      // @ts-ignore
+      throw new Error(data.Error);
+    }
+
+    // @ts-ignore
+    return parseResponse(data);
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const getAllMovies: () => Promise<IDetailedMovie[]> = async () => {
   try {
-    const snapshot = await moviesdb.get();
+    const snapshot = await getDocs(db);
     const movies = snapshot.docs.map((doc) => doc.data());
 
     return movies as IDetailedMovie[];
@@ -30,7 +63,7 @@ export const addMovie: (imdbid: string, excitement: number) => Promise<void> = a
 ) => {
   try {
     const detailedMovie = await getMovieById(imdbid);
-    await moviesdb.add({
+    await addDoc(db, {
       ...detailedMovie,
       excitement,
       ready: false,
@@ -42,28 +75,35 @@ export const addMovie: (imdbid: string, excitement: number) => Promise<void> = a
 
 export const deleteMovie: (imdbid: string) => Promise<void> = async (imdbid: string) => {
   try {
-    const moviesQuery = moviesdb.where('imdbid', '==', imdbid);
-    const snapshot = await moviesQuery.get();
+    const moviesQuery = query(db, where('imdbid', '==', imdbid));
+    const snapshot = await getDocs(moviesQuery);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     snapshot.forEach(async (item) => {
-      await item.ref.delete();
+      await deleteDoc(item.ref);
     });
   } catch (error) {
     throw error;
   }
 };
 
-export const searchMovie: (title: string) => Promise<IDetailedMovie[]> = async (title: string) => {
+export const searchMovie = async (title: string): Promise<IDetailedMovie[]> => {
   try {
-    const response = await imdbClient.search({ name: title });
+    const { data } = await imdbAxiosInstance.get<{
+      Response: 'True' | 'False';
+      Search: IDetailedMovie[];
+      totalResults: string;
+    }>('', {
+      params: { ...imdbAxiosBaseParams, s: title },
+    });
 
-    return response.results;
-  } catch (error) {
-    if (error.message.includes('Movie not found')) {
-      const movie = await getMovieById(title);
-
-      return [movie];
+    if (data.Response === 'True') {
+      return data.Search.map((res) => parseResponse<IDetailedMovie>(res));
     }
+
+    const movie = await getMovieById(title);
+
+    return [movie];
+  } catch (error) {
     throw error;
   }
 };
@@ -74,11 +114,11 @@ export const updateMovieField: (
   value: string | number
 ) => Promise<void> = async (imdbid, fieldToUpdate, value) => {
   try {
-    const moviesQuery = moviesdb.where('imdbid', '==', imdbid);
-    const snapshot = await moviesQuery.get();
+    const moviesQuery = query(db, where('imdbid', '==', imdbid));
+    const snapshot = await getDocs(moviesQuery);
     snapshot.forEach((doc) => {
       const docData = doc.data();
-      doc.ref.set({ ...docData, [fieldToUpdate]: value });
+      setDoc(doc.ref, { ...docData, [fieldToUpdate]: value });
     });
   } catch (error) {
     throw error;
@@ -89,12 +129,11 @@ export const updateMovie: (newMovieDetails: IDetailedMovie) => Promise<void> = a
   newMovieDetails
 ) => {
   try {
-    const moviesQuery = moviesdb.where('imdbid', '==', newMovieDetails.imdbid);
-    const snapshot = await moviesQuery.get();
+    const moviesQuery = query(db, where('imdbid', '==', newMovieDetails.imdbid));
+    const snapshot = await getDocs(moviesQuery);
     const promiseArray: Promise<void>[] = [];
     snapshot.forEach((doc) => {
-      promiseArray.push(moviesdb.doc(doc.id).set({ ...newMovieDetails }));
-      // doc.ref.set({ ...docData, ...newMovieDetails });
+      promiseArray.push(setDoc(doc.ref, { ...newMovieDetails }));
     });
     await Promise.all(promiseArray);
   } catch (error) {

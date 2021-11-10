@@ -1,17 +1,11 @@
 import { AppBar, Toolbar } from '@material-ui/core';
-import React, { Fragment, FunctionComponent } from 'react';
-import { StaticContext } from 'react-router';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import React, { FC } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AddMovieHeader } from '../AddMovieHeader/AddMovieHeader';
 import { HeaderTitle } from '../HeaderTitle';
 
-const Header: FunctionComponent<
-  React.PropsWithChildren<RouteComponentProps<any, StaticContext, any>>
-> = ({ location }) => {
-  const { pathname } = location;
-  if (pathname === '/signin' || pathname === 'signup') {
-    return <Fragment />;
-  }
+export const Header: FC = () => {
+  const { pathname } = useLocation();
 
   return (
     <AppBar position="static">
@@ -29,5 +23,3 @@ const Header: FunctionComponent<
     </AppBar>
   );
 };
-
-export const HeaderWithRouter = withRouter((props) => <Header {...props} />);

@@ -1,6 +1,5 @@
 import { Container, List } from '@material-ui/core';
-import firebase from 'firebase';
-import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import React, { Fragment, FunctionComponent, useState } from 'react';
 import { addMovie, searchMovie } from '../../api';
 import { ExcitementDialog } from '../../components/ExcitementDialog';
 import { LoadingOverlay } from '../../components/LoadingOverlay/LoadingOverlay';
@@ -10,27 +9,29 @@ import { IDetailedMovie } from '../MovieList';
 
 export const AddMovie: FunctionComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState('');
   const [searchResults, setSearchResults] = useState<IDetailedMovie[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [movieToAdd, setMovieToAdd] = useState('');
   const [excitementLevel, setExcitementLevel] = useState(0);
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        window.open('/signin', '_self');
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (!user) {
+  //       window.open('/signin', '_self');
+  //     }
+  //   });
+  // }, []);
 
   const handleSearchRequest = async () => {
     try {
+      setError('');
       const results = await searchMovie(searchQuery);
       setSearchResults(results);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('error searching for the movie', error);
+    } catch (e) {
+      const err = e as Error;
+      setError(err.message);
     } finally {
       setSearchQuery('');
     }
@@ -46,7 +47,7 @@ export const AddMovie: FunctionComponent = () => {
       setLoading(true);
       await addMovie(movieToAdd, excitementLevel);
       window.open('/', '_self');
-    } catch (error) {
+    } catch (err) {
       // eslint-disable-next-line no-console
       console.log('error adding a movie');
       setLoading(false);
@@ -82,7 +83,7 @@ export const AddMovie: FunctionComponent = () => {
             ))}
           </List>
         ) : (
-          <div>No movie found</div>
+          <div>{error ? error : 'No movie found'}</div>
         )}
         <ExcitementDialog
           excitementLevel={excitementLevel}

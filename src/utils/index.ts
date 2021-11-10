@@ -3,22 +3,6 @@ import moment from 'moment';
 import { getMovieById } from '../api';
 import { IDBMovie, IDetailedMovie } from '../screens/MovieList';
 
-export const calculateAvailability: (movie: IDetailedMovie) => boolean = (movie) => {
-  if (movie.dvd && movie.dvd !== 'N/A') {
-    const dvdDate = Date.parse(movie.dvd);
-    if (Date.now() > dvdDate) return true;
-    else return false;
-  } else if (movie.released.seconds) {
-    const releaseDate = Date.parse((movie.released.seconds * 1000).toString());
-    const newDate = new Date();
-    newDate.setMonth(newDate.getMonth() - 3);
-    const dateToCalculate = Date.parse(newDate.toString());
-    if (dateToCalculate > releaseDate) return true;
-  }
-
-  return false;
-};
-
 export const getFLReady: (
   movie: IDetailedMovie
 ) => Promise<{ imdbid: string; flReady: boolean }> = async (movie) => {
@@ -64,7 +48,6 @@ export const parseMovies: (movies: IDBMovie[]) => Promise<IDetailedMovie[]> = (m
       .then((detailedMovies) => {
         detailedMovies.forEach((detailedMovie: IDetailedMovie) => {
           detailedMovie.releasedFmt = moment(detailedMovie.released).format('DD/MM/YYYY');
-          detailedMovie.ready = calculateAvailability(detailedMovie);
           detailedMovie.excitement = getMovieExcitement(detailedMovie, movies);
           parsedMovies.push(detailedMovie);
         });
@@ -85,4 +68,15 @@ export const validateEmail: (email: string) => boolean = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   return re.test(email.toLowerCase());
+};
+
+export const parseResponse = <T>(data: any): T => {
+  const returnObj = {};
+  Object.keys(data).forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    //@ts-ignore
+    returnObj[key.toLowerCase()] = data[key];
+  });
+
+  return returnObj as T;
 };

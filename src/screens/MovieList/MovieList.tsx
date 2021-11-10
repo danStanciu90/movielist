@@ -1,7 +1,6 @@
 import { DeleteForever, Favorite } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { withStyles } from '@material-ui/styles';
-import firebase from 'firebase';
 import MaterialTable, { Action, Column } from 'material-table';
 import moment from 'moment';
 import React, { Fragment, FunctionComponent, MouseEvent, useEffect, useState } from 'react';
@@ -28,7 +27,7 @@ export interface IDetailedMovie {
   title: string;
   rating: number;
   year: number;
-  released: { seconds: number; nanoseconds: number };
+  released: string;
   releasedFmt: string;
   poster: string;
   dvd?: string;
@@ -47,29 +46,22 @@ export const MovieList: FunctionComponent = () => {
   const [movieToDelete, setMovieToDelete] = useState<IDetailedMovie>();
   const { width } = useWindowSize();
 
+  const getTableData = () => {
+    getAllMovies()
+      .then((dbMovies: IDetailedMovie[]) => {
+        dbMovies.forEach((dbMovie: IDetailedMovie) => {
+          dbMovie.releasedFmt = moment(dbMovie.released).format('DD/MM/YYYY');
+        });
+        setMovies(dbMovies);
+        setLoading(false);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log('error getting the movies', err));
+  };
+
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     getTableData();
   }, []);
-
-  const getTableData = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        window.open('/signin', '_self');
-      } else {
-        getAllMovies()
-          .then((dbMovies: IDetailedMovie[]) => {
-            dbMovies.forEach((dbMovie: IDetailedMovie) => {
-              dbMovie.releasedFmt = moment(dbMovie.released.seconds * 1000).format('DD/MM/YYYY');
-            });
-            setMovies(dbMovies);
-            setLoading(false);
-          })
-          // eslint-disable-next-line no-console
-          .catch((err) => console.log('error getting the movies', err));
-      }
-    });
-  };
 
   const handleDeleteMovie = async () => {
     if (!movieToDelete) {
@@ -137,7 +129,7 @@ export const MovieList: FunctionComponent = () => {
     {
       title: 'Release Date',
       field: 'releasedFmt',
-      customSort: (a, b) => a.released.seconds - b.released.seconds,
+      customSort: (a, b) => moment(a.released).unix() - moment(b.released).unix(),
     },
     {
       title: 'Excitement',

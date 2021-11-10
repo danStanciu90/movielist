@@ -8,7 +8,7 @@ import { MovieDetailListItem } from './MovieDetailListItem/MovieDetailListItem';
 
 interface IMovieDetailProps {
   movie: IDetailedMovie;
-  onExcitementChange(imdbid: string, value: number): void;
+  onExcitementChange(imdbid: string, value: number | null): void;
 }
 
 const StyledRating = withStyles({
@@ -60,7 +60,7 @@ export const MovieDetail: FunctionComponent<IMovieDetailProps> = ({
               icon={<FavoriteIcon fontSize="inherit" />}
               name="MovieRating"
               // eslint-disable-next-line react/jsx-no-bind
-              onChange={(_event: ChangeEvent<{}>, value: number) =>
+              onChange={(_event: ChangeEvent<{}>, value: number | null) =>
                 onExcitementChange(movie.imdbid, value)
               }
               value={movie.excitement}
