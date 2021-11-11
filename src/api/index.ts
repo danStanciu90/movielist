@@ -2,21 +2,10 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import { addDoc, deleteDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
-// import imdb from 'imdb-api';
 import { IDetailedMovie } from '../screens/MovieList';
 import { parseResponse } from '../utils';
 import { db } from '../utils/firebase';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const imdb = require('imdb-api');
 
-// const imdbClient = new Client({
-//   apiKey: '50ca2246',
-//   // apiKey: 'AIzaSyA8jmwxGDSdexO-Ie4vanwZGi_VOQrXnwo',
-// });
-// //now
-// https://www.omdbapi.com/?apikey=50ca2246&s=venom&page=1&r=json
-// //old
-// https://www.omdbapi.com/?apikey=50ca2246&page=1&r=json&s=venom
 
 const imdbAxiosBaseParams = {
   apiKey: '50ca2246',

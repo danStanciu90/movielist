@@ -39,4 +39,4 @@ export const updateMoviesDb = functions.runWith({
   memory: '128MB',
   maxInstances: 1,
   timeoutSeconds: 30,
-}).region('europe-west1').pubsub.schedule('0 0 * * *').onRun(handler)
+}).region('europe-west1').pubsub.schedule('0 0 * * *').timeZone('Europe/Copenhagen').onRun(handler)
