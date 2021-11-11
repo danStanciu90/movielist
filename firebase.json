@@ -12,5 +12,8 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "functions": {
+    "predeploy": "yarn --prefix \"$RESOURCE_DIR\" build"
   }
 }

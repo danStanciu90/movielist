@@ -1,6 +1,7 @@
-const { getFLReady, getAllMovies, getMovieById, updateMovie } = require('./utils');
+import * as functions from "firebase-functions";
+import { getAllMovies, getFLReady, getMovieById, updateMovie } from "./utils";
 
-exports.handler = async () => {
+const handler = async () => {
   try {
     const dbMovies = await getAllMovies();
     console.log('All movies received from firebase db');
@@ -31,3 +32,11 @@ exports.handler = async () => {
     throw error;
   }
 };
+
+
+// every day at 00:00
+export const updateMoviesDb = functions.runWith({
+  memory: '128MB',
+  maxInstances: 1,
+  timeoutSeconds: 30,
+}).region('europe-west1').pubsub.schedule('0 0 * * *').onRun(handler)

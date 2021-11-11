@@ -1,18 +1,29 @@
-const { collection, getFirestore, getDocs, query, setDoc, where } = require('firebase/firestore');
-const axios = require('axios');
-const { initializeApp } = require('firebase/app');
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+import axios from 'axios';
+import { config as firebaseConfig } from 'firebase-functions';
+import { initializeApp } from 'firebase/app';
+import {
+  collection,
+  DocumentData,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+  where
+} from 'firebase/firestore';
+import { IDetailedMovie } from './types';
 
-const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  databaseURL: process.env.DB_URL,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MSG_SENDER_ID,
-  appId: process.env.APP_ID,
+const fbConfig = {
+  apiKey: firebaseConfig().env.API_KEY,
+  authDomain: firebaseConfig().env.AUTH_DOMAIN,
+  databaseURL: firebaseConfig().env.DB_URL,
+  projectId: firebaseConfig().env.PROJECT_ID,
+  storageBucket: firebaseConfig().env.STORAGE_BUCKET,
+  messagingSenderId: firebaseConfig().env.MSG_SENDER_ID,
+  appId: firebaseConfig().env.APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(fbConfig);
 const db = collection(getFirestore(app), 'movies');
 
 const imdbAxiosBaseParams = {
@@ -23,25 +34,28 @@ const imdbAxiosInstance = axios.create({
   baseURL: 'https://www.omdbapi.com',
 });
 
-const parseResponse = (data) => {
+const parseResponse = <T>(data: any): T => {
   const returnObj = {};
   Object.keys(data).forEach((key) => {
+    //@ts-ignore
     returnObj[key.toLowerCase()] = data[key];
   });
-  return returnObj;
+
+  return returnObj as T;
 };
 
-exports.getAllMovies = async () => {
+export const getAllMovies = async (): Promise<DocumentData[]> => {
   try {
     const snapshot = await getDocs(db);
     const movies = snapshot.docs.map((doc) => doc.data());
+
     return movies;
   } catch (error) {
     throw error;
   }
-}
+};
 
-exports.getMovieById = async (movieId) => {
+export const getMovieById = async (movieId: string): Promise<IDetailedMovie> => {
   try {
     const { data } = await imdbAxiosInstance.get('', {
       params: { ...imdbAxiosBaseParams, i: movieId },
@@ -51,13 +65,18 @@ exports.getMovieById = async (movieId) => {
       throw new Error(data.Error);
     }
 
-    return parseResponse(data);
+    return parseResponse<IDetailedMovie>(data);
   } catch (error) {
     throw error;
   }
 };
 
-exports.getFLReady = async (movie) => {
+export const getFLReady = async (
+  movie: IDetailedMovie
+): Promise<{
+  imdbid: string;
+  flReady: boolean;
+}> => {
   try {
     const { data } = await axios.get('https://filelist.io/api.php?', {
       params: {
@@ -68,7 +87,7 @@ exports.getFLReady = async (movie) => {
       },
       auth: {
         username: 'danstanciu90',
-        password: process.env.FL_TOKEN,
+        password: firebaseConfig().env.FL_TOKEN || '',
       },
     });
 
@@ -78,11 +97,11 @@ exports.getFLReady = async (movie) => {
   }
 };
 
-exports.updateMovie = async (newMovieDetails) => {
+export const updateMovie = async (newMovieDetails: IDetailedMovie): Promise<void> => {
   try {
     const moviesQuery = query(db, where('imdbid', '==', newMovieDetails.imdbid));
     const snapshot = await getDocs(moviesQuery);
-    const promiseArray = [];
+    const promiseArray: Promise<void>[] = [];
     snapshot.forEach((doc) => {
       promiseArray.push(setDoc(doc.ref, { ...newMovieDetails }));
     });
